@@ -1,14 +1,14 @@
 const { post } = require('axios').default;
 
-const tgAPI = `https://api.telegram.org/bot${process.env.token}`;
+const tgAPI = `https://api.telegram.org/bot${process.env.BOT_TOKEN}`;
 
-function sendMessage(text, m, ...params) {
+function sendMessage(text, m, { disablePreview } = {}) {
   post(`${tgAPI}/sendMessage`, {
     text,
     chat_id: m.chat.id,
     parse_mode: 'Markdown',
-    disable_web_page_preview: params.preview || true,
-  }).catch((err) => { throw err; });
+    disable_web_page_preview: disablePreview || false,
+  }).catch((err) => { throw err.data; });
 }
 
 function deleteMessage(m) {
